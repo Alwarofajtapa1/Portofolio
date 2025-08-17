@@ -3,114 +3,273 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio Discord Bota: GGGCode</title>
+  <title>GGGCode – Panel Portfolio</title>
   <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #1e1e2f;
+      background-color: #2c2f33;
       color: #fff;
+      display: flex;
+      height: 100vh;
     }
-    header {
-      background-color: #7289da;
-      text-align: center;
-      padding: 2rem 1rem;
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background-color: #23272a;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
     }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-    header p {
-      margin-top: 0.5rem;
-      font-size: 1.2rem;
-    }
-    .container {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    .project {
-      background-color: #2c2f48;
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .project h2 {
-      margin-top: 0;
-      color: #ffcc00;
-    }
-    .project img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-top: 1rem;
-    }
-    ul {
-      padding-left: 1.2rem;
-    }
-    .function img {
-      margin-top: 0.5rem;
+    .sidebar h2 {
+      color: #7289da;
       margin-bottom: 1rem;
     }
-    footer {
-      text-align: center;
+    .menu-item {
+      padding: 0.8rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .menu-item:hover, .menu-item.active {
+      background-color: #7289da;
+    }
+
+    /* Main panel */
+    .main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    .hidden { display: none; }
+
+    /* Cards */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      perspective: 1000px;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
       padding: 1rem;
-      background-color: #2c2f48;
+    }
+    .card-front {
+      background-color: #99aab5;
+      color: #2c2f33;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .card-back {
+      background-color: #23272a;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .card-back img {
+      max-width: 90%;
+      max-height: 150px;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+    }
+
+    /* Try Me demo */
+    .chat-box {
+      background: #23272a;
+      border-radius: 12px;
+      padding: 1rem;
+      max-width: 500px;
+    }
+    .messages {
+      height: 200px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      padding-right: 0.5rem;
+    }
+    .msg {
+      margin: 0.3rem 0;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+    }
+    .user {
+      background: #7289da;
+      align-self: flex-end;
+    }
+    .bot {
+      background: #99aab5;
+      color: #2c2f33;
+      align-self: flex-start;
+    }
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .input-row input {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: none;
+    }
+    .input-row button {
+      padding: 0.5rem 1rem;
+      background: #7289da;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .input-row button:hover {
+      background: #5b6eae;
+    }
+
+    /* Animacje wejścia */
+    .fade-in {
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>𝙋𝙤𝙧𝙩𝙛𝙤𝙡𝙞𝙤: 𝘿𝙤𝙢𝙮𝙦</h1>
-    <p>Developer: Domyq</p>
-  </header>
+  <div class="sidebar">
+    <h2>GGGCode</h2>
+    <div class="menu-item active" onclick="showSection('funkcje', this)">Funkcje</div>
+    <div class="menu-item" onclick="showSection('autor', this)">O autorze</div>
+  </div>
 
-  <div class="container">
-    <div class="project">
-      <h2>𝙂𝙂𝙂𝘾𝙤𝙙𝙚</h2>
-      <p><strong>𝙏𝙚𝙘𝙝𝙣𝙤𝙡𝙤𝙜𝙞𝙚:</strong> 𝙉𝙤𝙙𝙚.𝙟𝙨, 𝘿𝙞𝙨𝙘𝙤𝙧𝙙.𝙟𝙨, 𝙋𝙮𝙩𝙝𝙤𝙣 </p>
-
-      <h3>𝙁𝙪𝙣𝙠𝙘𝙟𝙚:</h3>
-
-      <div class="function">
-        <h4>𝙒𝙚𝙧𝙮𝙛𝙞𝙠𝙖𝙘𝙟𝙖</h4>
-        <img src="https://i.imgur.com/p977isA.png" alt="Weryfikacja 1">
-        <img src="https://i.imgur.com/RKlOCaV.png" alt="Weryfikacja 2">
+  <div class="main">
+    <!-- Funkcje -->
+    <div id="funkcje" class="section fade-in">
+      <h2>Funkcje bota</h2>
+      <div class="card-container">
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-front">Automatyczna Weryfikacja</div>
+            <div class="card-back">
+              <p>Bot sprawdza użytkowników poprzez zadania matematyczne.</p>
+              <img src="https://i.imgur.com/p977isA.png" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-front">Powitania</div>
+            <div class="card-back">
+              <p>Nowi użytkownicy otrzymują personalne powitanie.</p>
+              <img src="https://i.imgur.com/s7bbYHT.png" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-front">Nadawanie dostępu</div>
+            <div class="card-back">
+              <p>Automatyczne przydzielanie ról po weryfikacji.</p>
+              <img src="https://i.imgur.com/kH1qEmA.png" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-front">Try Me Demo</div>
+            <div class="card-back">
+              <div class="chat-box">
+                <div class="messages" id="messages"></div>
+                <div class="input-row">
+                  <input type="text" id="userInput" placeholder="Napisz komendę np. !verify">
+                  <button onclick="sendMessage()">Wyślij</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="function">
-        <h4>𝙋𝙤𝙬𝙞𝙩𝙖𝙣𝙞𝙖</h4>
-        <img src="https://i.imgur.com/s7bbYHT.png" alt="Powitania">
-      </div>
-
-      <div class="function">
-        <h4>𝙉𝙖𝙙𝙖𝙟</h4>
-        <img src="https://i.imgur.com/kH1qEmA.png" alt="Nadawanie dostępu">
-      </div>
-
-      <div class="function">
-        <h4> 𝙍𝙚𝙨𝙚𝙩</h4>
-        <img src="https://i.imgur.com/KZN987I.png" alt="Reset bota">
-      </div>
-
-      <div class="function">
-        <h4>𝙐𝙨𝙪𝙣</h4>
-        <img src="https://i.imgur.com/nmnYjLK.png" alt="Usuwanie wiadomości">
-      </div>
-
-      <div class="function">
-        <h4>𝙋𝙧𝙤𝙥𝙤𝙯𝙮𝙘𝙟𝙖</h4>
-        <img src="https://i.imgur.com/qR8m6yg.png" alt="Automatyczne propozycje">
-      </div>
-
-      <div class="function">
-        <h4> 𝙊𝙥𝙞𝙣𝙞𝙖</h4>
-        <img src="https://i.imgur.com/jf1ZzB1.png" alt="Automatyczne opinie">
-      </div>
+    <!-- Autor -->
+    <div id="autor" class="section hidden fade-in">
+      <h2>O autorze</h2>
+      <p><strong>Developer:</strong> Domyq</p>
+      <p>Twórca bota GGGCode, pasjonat automatyzacji i moderacji Discorda.  
+      Cenię bezpieczeństwo, prostotę i wygodę administracji.  
+      Boty traktuję jako narzędzia, które mają realnie pomagać społecznościom.</p>
+      <p><strong>Dlaczego ten bot jest wyjątkowy?</strong></p>
+      <ul>
+        <li>✔️ Automatyzuje weryfikację i powitania</li>
+        <li>✔️ Oszczędza czas administracji</li>
+        <li>✔️ Zapewnia porządek i bezpieczeństwo</li>
+        <li>✔️ Łatwy w rozbudowie i dostosowaniu</li>
+      </ul>
     </div>
   </div>
 
-  <footer>
-    <p>Stworzono przez Domyq</p>
-  </footer>
+  <script>
+    // Zmiana sekcji
+    function showSection(id, el) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+
+      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Try Me Demo chat
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const messages = document.getElementById('messages');
+      const userMsg = input.value.trim();
+      if (!userMsg) return;
+
+      const userDiv = document.createElement('div');
+      userDiv.className = 'msg user';
+      userDiv.textContent = userMsg;
+      messages.appendChild(userDiv);
+
+      const botDiv = document.createElement('div');
+      botDiv.className = 'msg bot';
+
+      if (userMsg.toLowerCase() === '!verify') {
+        botDiv.textContent = '✅ Weryfikacja zakończona pomyślnie!';
+      } else if (userMsg.toLowerCase() === '!suggest') {
+        botDiv.textContent = '💡 Twoja propozycja została zapisana.';
+      } else if (userMsg.toLowerCase() === '!opinia') {
+        botDiv.textContent = '⭐ Dziękujemy za opinię!';
+      } else {
+        botDiv.textContent = '🤖 Nieznana komenda.';
+      }
+
+      messages.appendChild(botDiv);
+      messages.scrollTop = messages.scrollHeight;
+      input.value = '';
+    }
+  </script>
 </body>
 </html>

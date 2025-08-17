@@ -3,54 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GGGCode – Panel Portfolio</title>
+  <title>Portfolio Discord Bota: GGGCode</title>
   <style>
-    /* Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    /* RESET */
+    * {margin:0;padding:0;box-sizing:border-box;}
     body {
       font-family: Arial, sans-serif;
-      background-color: #2c2f33;
+      background-color: #1e1e2f;
       color: #fff;
       display: flex;
-      height: 100vh;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.light {
+      background-color: #f0f0f0;
+      color: #222;
     }
 
-    /* Sidebar */
+    /* SIDEBAR */
     .sidebar {
       width: 220px;
-      background-color: #23272a;
+      background-color: #2c2f48;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
-      padding: 1rem;
+      align-items: center;
     }
     .sidebar h2 {
+      margin-bottom: 2rem;
+      font-size: 1.4rem;
       color: #7289da;
-      margin-bottom: 1rem;
     }
-    .menu-item {
+    .sidebar button {
+      background: none;
+      border: none;
+      color: inherit;
       padding: 0.8rem;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
+      width: 100%;
+      text-align: left;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.3s;
+      border-radius: 8px;
+      transition: background 0.2s;
     }
-    .menu-item:hover, .menu-item.active {
-      background-color: #7289da;
+    .sidebar button:hover {
+      background: rgba(114,137,218,0.3);
     }
 
-    /* Main panel */
-    .main {
+    /* MAIN */
+    main {
       flex: 1;
       padding: 2rem;
       overflow-y: auto;
     }
-    .hidden { display: none; }
 
-    /* Cards */
-    .card-container {
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* CARDS */
+    .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
       gap: 1.5rem;
     }
     .card {
@@ -60,8 +75,9 @@
       position: relative;
       width: 100%;
       height: 300px;
-      transform-style: preserve-3d;
       transition: transform 0.6s;
+      transform-style: preserve-3d;
+      cursor: pointer;
     }
     .card:hover .card-inner {
       transform: rotateY(180deg);
@@ -70,205 +86,246 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      backface-visibility: hidden;
       border-radius: 12px;
+      backface-visibility: hidden;
       padding: 1rem;
-    }
-    .card-front {
-      background-color: #99aab5;
-      color: #2c2f33;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
-    .card-back {
-      background-color: #23272a;
-      transform: rotateY(180deg);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .card-front {
+      background-color: #2c2f48;
+    }
+    body.light .card-front {
+      background: #fff;
+    }
+    .card-back {
+      background-color: #7289da;
+      transform: rotateY(180deg);
       text-align: center;
     }
     .card-back img {
       max-width: 90%;
-      max-height: 150px;
+      border-radius: 8px;
       margin-top: 0.5rem;
-      border-radius: 8px;
+    }
+    .badge {
+      background: #ffcc00;
+      color: #000;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
     }
 
-    /* Try Me demo */
-    .chat-box {
-      background: #23272a;
-      border-radius: 12px;
-      padding: 1rem;
-      max-width: 500px;
+    /* SECTIONS */
+    section {
+      display: none;
+      animation: fadeIn 0.4s;
     }
-    .messages {
-      height: 200px;
-      overflow-y: auto;
-      margin-bottom: 1rem;
-      padding-right: 0.5rem;
-    }
-    .msg {
-      margin: 0.3rem 0;
-      padding: 0.5rem 0.8rem;
-      border-radius: 8px;
-    }
-    .user {
-      background: #7289da;
-      align-self: flex-end;
-    }
-    .bot {
-      background: #99aab5;
-      color: #2c2f33;
-      align-self: flex-start;
-    }
-    .input-row {
-      display: flex;
-      gap: 0.5rem;
-    }
-    .input-row input {
-      flex: 1;
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: none;
-    }
-    .input-row button {
-      padding: 0.5rem 1rem;
-      background: #7289da;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .input-row button:hover {
-      background: #5b6eae;
-    }
-
-    /* Animacje wejścia */
-    .fade-in {
-      animation: fadeIn 1s ease-in;
+    section.active {
+      display: block;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {opacity:0;transform:translateY(10px);}
+      to {opacity:1;transform:translateY(0);}
+    }
+
+    /* GALLERY */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 1rem;
+    }
+    .gallery-item {
+      background: #2c2f48;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      border-left: 2px solid #7289da;
+      padding-left: 1rem;
+    }
+    .timeline div {
+      margin-bottom: 1rem;
+    }
+
+    /* GOALS */
+    .goals ul {
+      list-style: none;
+    }
+    .goals li {
+      margin: 0.5rem 0;
+    }
+
+    /* TOGGLE */
+    .toggle-theme {
+      margin-top: auto;
+      cursor: pointer;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #7289da;
+      color: #fff;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
     <h2>GGGCode</h2>
-    <div class="menu-item active" onclick="showSection('funkcje', this)">Funkcje</div>
-    <div class="menu-item" onclick="showSection('autor', this)">O autorze</div>
+    <button onclick="showSection('funkcje')">⚡ Funkcje</button>
+    <button onclick="showSection('autor')">👤 O autorze</button>
+    <button onclick="showSection('projekty')">📂 Projekty</button>
+    <button onclick="showSection('cele')">🎯 Moje cele</button>
+    <button class="toggle-theme" onclick="toggleTheme()">🌙/☀️</button>
+    <audio id="clickSound" src="https://www.myinstants.com/media/sounds/discord-notification.mp3"></audio>
   </div>
 
-  <div class="main">
-    <!-- Funkcje -->
-    <div id="funkcje" class="section fade-in">
-      <h2>Funkcje bota</h2>
-      <div class="card-container">
+  <main>
+    <!-- FUNKCJE -->
+    <section id="funkcje" class="active">
+      <h1>Funkcje bota</h1>
+      <div class="cards">
         <div class="card">
           <div class="card-inner">
-            <div class="card-front">Automatyczna Weryfikacja</div>
+            <div class="card-front">
+              <h3>Weryfikacja matematyczna</h3>
+              <span class="badge">Bezpieczeństwo</span>
+            </div>
             <div class="card-back">
-              <p>Bot sprawdza użytkowników poprzez zadania matematyczne.</p>
-              <img src="https://i.imgur.com/p977isA.png" alt="">
+              <p>Bot automatycznie weryfikuje użytkowników zadaniem matematycznym.</p>
+              <img src="https://i.imgur.com/p977isA.png">
+              <img src="https://i.imgur.com/RKlOCaV.png">
             </div>
           </div>
         </div>
         <div class="card">
           <div class="card-inner">
-            <div class="card-front">Powitania</div>
+            <div class="card-front">
+              <h3>Automatyczne powitania</h3>
+              <span class="badge">Przyjazność</span>
+            </div>
             <div class="card-back">
-              <p>Nowi użytkownicy otrzymują personalne powitanie.</p>
-              <img src="https://i.imgur.com/s7bbYHT.png" alt="">
+              <p>Nowi użytkownicy otrzymują powitanie.</p>
+              <img src="https://i.imgur.com/s7bbYHT.png">
             </div>
           </div>
         </div>
         <div class="card">
           <div class="card-inner">
-            <div class="card-front">Nadawanie dostępu</div>
+            <div class="card-front">
+              <h3>Nadawanie dostępu</h3>
+              <span class="badge">Role</span>
+            </div>
             <div class="card-back">
-              <p>Automatyczne przydzielanie ról po weryfikacji.</p>
-              <img src="https://i.imgur.com/kH1qEmA.png" alt="">
+              <p>Bot automatycznie nadaje role lub dostęp do kanałów.</p>
+              <img src="https://i.imgur.com/kH1qEmA.png">
             </div>
           </div>
         </div>
         <div class="card">
           <div class="card-inner">
-            <div class="card-front">Try Me Demo</div>
+            <div class="card-front">
+              <h3>Reset bota</h3>
+              <span class="badge">Admin</span>
+            </div>
             <div class="card-back">
-              <div class="chat-box">
-                <div class="messages" id="messages"></div>
-                <div class="input-row">
-                  <input type="text" id="userInput" placeholder="Napisz komendę np. !verify">
-                  <button onclick="sendMessage()">Wyślij</button>
-                </div>
-              </div>
+              <p>Resetowanie działania bota jednym poleceniem.</p>
+              <img src="https://i.imgur.com/KZN987I.png">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-front">
+              <h3>Usuwanie wiadomości</h3>
+              <span class="badge">Moderacja</span>
+            </div>
+            <div class="card-back">
+              <p>Bot może automatycznie usuwać wiadomości.</p>
+              <img src="https://i.imgur.com/nmnYjLK.png">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-front">
+              <h3>Automatyczne propozycje</h3>
+              <span class="badge">Feedback</span>
+            </div>
+            <div class="card-back">
+              <p>Użytkownicy mogą dodawać swoje propozycje.</p>
+              <img src="https://i.imgur.com/qR8m6yg.png">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-front">
+              <h3>Automatyczne opinie</h3>
+              <span class="badge">Społeczność</span>
+            </div>
+            <div class="card-back">
+              <p>System zbierania opinii od użytkowników.</p>
+              <img src="https://i.imgur.com/jf1ZzB1.png">
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Autor -->
-    <div id="autor" class="section hidden fade-in">
-      <h2>O autorze</h2>
+    <!-- AUTOR -->
+    <section id="autor">
+      <h1>O autorze</h1>
       <p><strong>Developer:</strong> Domyq</p>
-      <p>Twórca bota GGGCode, pasjonat automatyzacji i moderacji Discorda.  
-      Cenię bezpieczeństwo, prostotę i wygodę administracji.  
-      Boty traktuję jako narzędzia, które mają realnie pomagać społecznościom.</p>
-      <p><strong>Dlaczego ten bot jest wyjątkowy?</strong></p>
+      <p><strong>Technologie:</strong> Node.js, Discord.js, MongoDB</p>
+      <div class="timeline">
+        <div><strong>2022:</strong> Pierwsze skrypty w JS</div>
+        <div><strong>2023:</strong> Tworzenie prostych botów</div>
+        <div><strong>2024:</strong> Rozwój GGGCode</div>
+      </div>
+    </section>
+
+    <!-- PROJEKTY -->
+    <section id="projekty">
+      <h1>Inne projekty</h1>
+      <div class="gallery">
+        <div class="gallery-item">
+          <h3>Bot testowy A</h3>
+          <p>Mały projekt do moderacji.</p>
+        </div>
+        <div class="gallery-item">
+          <h3>Bot muzyczny</h3>
+          <p>Prosty odtwarzacz muzyki z YouTube.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CELE -->
+    <section id="cele" class="goals">
+      <h1>Moje cele</h1>
       <ul>
-        <li>✔️ Automatyzuje weryfikację i powitania</li>
-        <li>✔️ Oszczędza czas administracji</li>
-        <li>✔️ Zapewnia porządek i bezpieczeństwo</li>
-        <li>✔️ Łatwy w rozbudowie i dostosowaniu</li>
+        <li>🔒 Ulepszanie bezpieczeństwa</li>
+        <li>⚡ Zwiększenie wydajności</li>
+        <li>🌍 Rozszerzenie bota na wiele serwerów</li>
+        <li>🤝 Współpraca z zespołem administracji</li>
       </ul>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <script>
-    // Zmiana sekcji
-    function showSection(id, el) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
-
-      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-      el.classList.add('active');
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.getElementById("clickSound").play();
     }
-
-    // Try Me Demo chat
-    function sendMessage() {
-      const input = document.getElementById('userInput');
-      const messages = document.getElementById('messages');
-      const userMsg = input.value.trim();
-      if (!userMsg) return;
-
-      const userDiv = document.createElement('div');
-      userDiv.className = 'msg user';
-      userDiv.textContent = userMsg;
-      messages.appendChild(userDiv);
-
-      const botDiv = document.createElement('div');
-      botDiv.className = 'msg bot';
-
-      if (userMsg.toLowerCase() === '!verify') {
-        botDiv.textContent = '✅ Weryfikacja zakończona pomyślnie!';
-      } else if (userMsg.toLowerCase() === '!suggest') {
-        botDiv.textContent = '💡 Twoja propozycja została zapisana.';
-      } else if (userMsg.toLowerCase() === '!opinia') {
-        botDiv.textContent = '⭐ Dziękujemy za opinię!';
-      } else {
-        botDiv.textContent = '🤖 Nieznana komenda.';
-      }
-
-      messages.appendChild(botDiv);
-      messages.scrollTop = messages.scrollHeight;
-      input.value = '';
+    function toggleTheme() {
+      document.body.classList.toggle("light");
     }
   </script>
 </body>
